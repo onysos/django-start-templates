@@ -37,4 +37,4 @@ INSTALLED_APPS = (
 
 DEBUG = False
 
-LOGGING['handlers']["logfile"]["filename"] = "/var/log/nginx/%s/django.log" %  
+LOGGING['handlers']["logfile"]["filename"] = "/var/log/nginx/%s/django.log" % FULL_SITE_NAME
