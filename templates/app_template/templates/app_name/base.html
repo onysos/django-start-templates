@@ -1,0 +1,14 @@
+{% verbatim %}
+{% extends "base.html" %}
+{% endverbatim %}
+{% templatetag openblock %} block {{app_name}}_active {% templatetag closeblock %}active{% templatetag openblock %} endblock {{app_name}}_active {% templatetag closeblock %}
+{% verbatim %}
+{% block title_left %}{% endverbatim %}{{app_name|title}}{% verbatim %}{% endblock title_left %}
+
+{% block corps %}
+{% block content %}
+
+{% endblock %}
+{% endblock %}
+{% endverbatim %}
+

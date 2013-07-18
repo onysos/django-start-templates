@@ -15,6 +15,9 @@ import os
 import sys
 from os.path import abspath, basename, dirname, join, normpath
 
+#===============================================================================
+# MUST Update settings
+#===============================================================================
 
 
 DEFAULT_FROM_EMAIL = "mymail@example.com"
@@ -23,15 +26,61 @@ DOMAIN_NAME = 'example.com'  # the root domain name from which all static and ap
 # ie : sitename = django  => static_url will be //static-django.example.com/ and base site url will be //django.example.com/
 
 
+########## APP CONFIGURATION
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    #------------------------------------------------------------------------------
+    # some well recomended apps :D
+    #------------------------------------------------------------------------------
+
+    # 'grappelli', # jazzy  admin interface
+    # 'sorl.thumbnail', # powerfull thumbnail lib in templates
+    # 'registration', # django_registration => a complet registarion apps with mail validation
+    # 'bootstrap_toolkit',# usefull helper for skin using twiter bootstrap
+
+    #------------------------------------------------------------------------------
+    # some must have apps (activated by default
+    #------------------------------------------------------------------------------
+    'south',  # South migration tool.
+    'django_extensions',  # a Must have tool
+
+    #------------------------------------------------------------------------------
+    # your apps come hier
+    #------------------------------------------------------------------------------
+    # 'app1',
+
+
+
+)
+
+#===============================================================================
+# dynamic settings
+#===============================================================================
+
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
 ROOT = DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
-
-
 # Site name.
 SITE_NAME = basename(DJANGO_ROOT)
+
+
+# gues import path for project directory import
+try:
+    # try in a buildout powered env
+    __import__("%s.%s.context_processors" % (SITE_NAME, SITE_NAME))
+    BASE_IMPORT_PATH = "%s.%s" % (SITE_NAME, SITE_NAME)
+except ImportError:
+    # default conf
+    BASE_IMPORT_PATH = SITE_NAME
+
 
 FULL_SITE_NAME = "%s.%s" % (SITE_NAME, DOMAIN_NAME)
 
@@ -171,35 +220,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "%s.context_processors.version" % BASE_IMPORT_PATH,  # a simple processor who give access to LOCAL_VERSION isued from VCS
+
     )
+
+
+
+
+
 ########## END MIDDLEWARE CONFIGURATION
 BOOTSTRAP_BASE_URL = STATIC_URL + "/bootstrap/"
 LOGIN_URL = "auth:login"  # since django 1.5, can be a named url patern
 LOGIN_REDIRECT_URL = "/"
 
-########## APP CONFIGURATION
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # 'grappelli', # jazzy  admin interface
-    # 'sorl.thumbnail', # powerfull thumbnail lib in templates
-    # Admin panel and documentation.
-    'django.contrib.admin',
-    # South migration tool.
-    'south',
-    # admin interface
-    # 'registration',
 
-    # graphic tools
-    # 'bootstrap_toolkit',# usefull helper for skin using twiter bootstrap
-    'django_extensions',  # a Must have tool
-
-
-)
 ########## END APP CONFIGURATION
 
 
@@ -209,7 +243,7 @@ INSTALLED_APPS = (
 
 # ROOT_URLCONF = '%s.%s.urls' % (SITE_NAME, SITE_NAME)
 # default
-ROOT_URLCONF = '%s.urls' % (SITE_NAME)
+ROOT_URLCONF = '%s.urls' % (BASE_IMPORT_PATH)
 
 ALLOWED_HOSTS = [FULL_SITE_NAME]
 ########## END URL CONFIGURATION
