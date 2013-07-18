@@ -1,4 +1,4 @@
-django application templates 
+django startapp/startproject templates 
 ============================
 
 a template usable by django_admin.py to start a apps with some better defaults files (django1.5)
