@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     # 'sorl.thumbnail', # powerfull thumbnail lib in templates
     # 'registration', # django_registration => a complet registarion apps with mail validation
     # 'bootstrap_toolkit',# usefull helper for skin using twiter bootstrap
+    # 'django_nginx', # generate nginx config with «manage.py create_nginx_config»
 
     #------------------------------------------------------------------------------
     # some must have apps (activated by default
