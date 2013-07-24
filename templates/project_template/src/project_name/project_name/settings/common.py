@@ -20,11 +20,16 @@ from os.path import abspath, basename, dirname, join, normpath
 #===============================================================================
 
 
-DEFAULT_FROM_EMAIL = "mymail@example.com"
-
 DOMAIN_NAME = 'example.com'  # the root domain name from which all static and apps will be sub_domain.
 # ie : sitename = django  => static_url will be //static-django.example.com/ and base site url will be //django.example.com/
 
+# the administrator IP address which can have direct access event durring server maintenance (used by django_ngnix apps)
+ADMINISTRATOR_IP = '127.0.0.1'
+
+# urls from with all transmission shoul be securized with ssl (https).
+# remember do prefix your urls (in urls.py) with this to make sur that the http server can
+# make the redirections acordingly (see django_nginx apps)
+SECURE_PREFIX = ["/secure/", "/accounts/"]
 
 ########## APP CONFIGURATION
 INSTALLED_APPS = (
@@ -55,8 +60,6 @@ INSTALLED_APPS = (
     #------------------------------------------------------------------------------
     # 'app1',
 
-
-
 )
 
 #===============================================================================
@@ -72,6 +75,8 @@ ROOT = DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 SITE_NAME = basename(DJANGO_ROOT)
 
 
+DEFAULT_FROM_EMAIL = "%s@%s" % (SITE_NAME, DOMAIN_NAME)
+
 # gues import path for project directory import
 try:
     # try in a buildout powered env
@@ -82,7 +87,7 @@ except ImportError:
     BASE_IMPORT_PATH = SITE_NAME
 
 
-FULL_SITE_NAME = "%s.%s" % (SITE_NAME, DOMAIN_NAME)
+FULL_SITE_NAME = FQDN = "%s.%s" % (SITE_NAME, DOMAIN_NAME)
 
 # Absolute filesystem path to the top-level project folder.
 SITE_ROOT = dirname(DJANGO_ROOT)
@@ -93,6 +98,13 @@ SECRET_FILE = normpath(join(SITE_ROOT, 'SECRET'))
 
 VERSION_FILE = normpath(join(SITE_ROOT, 'VERSION'))
 
+
+# after each update, i do a
+# $ hg parent -q > $VERSION_FILE which permit to display the current version in the footer for example.
+if os.access(VERSION_FILE, os.R_OK):
+    LOCAL_VERSION = open(VERSION_FILE).read().strip()
+else:
+    LOCAL_VERSION = None
 ########## END PATH CONFIGURATION
 
 
@@ -157,7 +169,10 @@ USE_L10N = True
 MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
 
 # URL that handles the media served from MEDIA_ROOT.
-MEDIA_URL = '//static-%s/media/' % FULL_SITE_NAME
+if LOCAL_VERSION is None:
+    MEDIA_URL = '//static-%s/media/' % FULL_SITE_NAME
+else:
+    MEDIA_URL = '//static-%s/media/r%s/' % (FULL_SITE_NAME, LOCAL_VERSION)
 
 ########## END MEDIA CONFIGURATION
 
@@ -170,8 +185,11 @@ STATIC_ROOT = normpath(join(DJANGO_ROOT, 'static'))
 
 # URL prefix for static files.
 
-STATIC_URL = '//static-%s/static/' % FULL_SITE_NAME
 
+if LOCAL_VERSION is None:
+    STATIC_URL = '//static-%s/static/' % FULL_SITE_NAME
+else:
+    STATIC_URL = '//static-%s/static/r%s/' % (FULL_SITE_NAME, LOCAL_VERSION)
 
 
 # Additional locations of static files.
@@ -231,6 +249,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 ########## END MIDDLEWARE CONFIGURATION
 BOOTSTRAP_BASE_URL = STATIC_URL + "/bootstrap/"
 LOGIN_URL = "auth:login"  # since django 1.5, can be a named url patern
+
 LOGIN_REDIRECT_URL = "/"
 
 
@@ -245,7 +264,7 @@ LOGIN_REDIRECT_URL = "/"
 # default
 ROOT_URLCONF = '%s.urls' % (BASE_IMPORT_PATH)
 
-ALLOWED_HOSTS = [FULL_SITE_NAME]
+ALLOWED_HOSTS = [FULL_SITE_NAME, ADMINISTRATOR_IP]
 ########## END URL CONFIGURATION
 
 CACHES = {
@@ -278,12 +297,7 @@ except IOError:
 ########## END KEY CONFIGURATION
 
 ######### Mercurial Version
-# after each update, i do a
-# $ hg parent -q > $VERSION_FILE which permit to display the current version in the footer for example.
-if os.access(VERSION_FILE, os.R_OK):
-    LOCAL_VERSION = open(VERSION_FILE).read().strip()
-else:
-    LOCAL_VERSION = None
+
 
 
 LOGGING = {

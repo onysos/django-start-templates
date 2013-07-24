@@ -22,8 +22,8 @@ DATABASES = {
     }
 }
 
-
-
+# used by default django_nginx config
+USE_X_FORWARDED_HOST = True
 
 MEDIA_ROOT = "/home/media/prod/%s/" % SITE_NAME
 MEDIA_CACHE_DIR = os.path.join(MEDIA_ROOT , 'cache')
@@ -36,5 +36,7 @@ INSTALLED_APPS = (
 
 
 DEBUG = False
+logfile = "/var/log/nginx/%s/django.log" % FULL_SITE_NAME
+if os.access(logfile, os.W_OK):
+    LOGGING['handlers']["logfile"]["filename"] = logfile
 
-LOGGING['handlers']["logfile"]["filename"] = "/var/log/nginx/%s/django.log" % FULL_SITE_NAME

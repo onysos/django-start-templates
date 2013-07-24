@@ -12,11 +12,11 @@ first : clone this git repo to get all templates
 
 then startproject
 
-    django-admin.py startproject --template /tmp/django-start-templates/templates/project_template myamazingproject
+    django-admin.py startproject --template --extension .cfg /tmp/django-start-templates/templates/project_template myamazingproject
     
 or startapp
 
-    django-admin.py startapp --extension .html --template /tmp/django-start-templates/templates/app_template/ myamazingApp
+    django-admin.py startapp --extension .html   --template /tmp/django-start-templates/templates/app_template/ myamazingApp
 
 
 
@@ -63,10 +63,79 @@ the default common.py settings provide:
   - footer
   - javascript
   - customized errors pages (404,500,503)
+- all settings needed by default for use django_nginx apps (designed to generate init script and nginx config)
+- a buildout.cfg default file which can be a good start point.
+
   
 all templates is currently writen un French, so remember to translate manualy all these. 
-(feel free to make a push request if you translate without modifying too much the base.html)
+(feel free to make a push request if you translate without customizing too much)
 
+
+exemple of default site in 5 minute
+-----------------------------------
+
+  # first, don't work in your home, or it will be a mess soon enouth
+  cd /tmp/
+  mkdir experiments
+  
+  # copy this repo (how can you try it without getting it ?)
+  git clone https://github.com/onysos/django-start-templates.git /tmp/django-start-template
+  
+  # create your project «amayinapps» rigth hier
+  django-admin.py startproject amazingapps --extension .cfg --template /tmp/django_start_templates/templates/project_template
+  
+  cd amazingapps
+  
+  # create buildout tree
+  python bootstrap.py
+  
+  # make buildout env for dev (-c prod.cfg will use prod dependecy and settings.prod)
+  bin/buildout -c dev.cfg
+  
+  # go into the dirrectory for custom apps
+  cd src/amazingapps/apps
+  
+  # create your app «app1»
+  django-admin.py startapp --template /tmp/django_start_templates/templates/app_template app1 --extension .html
+  
+  cd ../../.. 
+  
+  # run the server and check your message «It worked!»
+  bin/django runserver
+  
+ATM, you don't have anything in your urls.py, so you can't see anything.
+lets correct this by:
+
+1. add «app1» in INSTALLED_APPS:
+
+  vim src/amazingapps/amazingapps/settings/common.py
+
+2. add some url in your urls.py (project and apps)
+
+  vim src/amazingapps/apps/app1/urls.py
+  vim src/amazingapps/amazingapps/urls.py
+  
+
+3. restart server:
+  
+  bin/django runserver
+  
+  
+take a look at your files:
+
+templates: 
+
+- src/amazingapps/amazingapps/templates
+- src/amazingapps/apps/app1/templates
+
+urls:
+
+- src/amazingapps/amazingapps/urls.py
+- src/amazingapps/apps/app1/urls.py
+
+views:
+
+- src/amazingapps/apps/app1/views.py
   
 
 thanks
