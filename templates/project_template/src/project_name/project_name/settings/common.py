@@ -39,12 +39,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
+
     #------------------------------------------------------------------------------
     # some well recomended apps :D
     #------------------------------------------------------------------------------
 
     # 'grappelli', # jazzy  admin interface
+    # 'django.contrib.admin', # django admin interface
     # 'sorl.thumbnail', # powerfull thumbnail lib in templates
     # 'registration', # django_registration => a complet registarion apps with mail validation
     # 'bootstrap_toolkit',# usefull helper for skin using twiter bootstrap

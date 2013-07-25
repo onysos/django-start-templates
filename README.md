@@ -78,6 +78,7 @@ first, don't work in your home, or it will be a mess soon enouth
 ```bash
 cd /tmp/
 mkdir experiments
+cd experiments
 ```
 
 copy this repo (how can you try it without getting it ?)
@@ -89,7 +90,7 @@ git clone https://github.com/onysos/django-start-templates.git /tmp/django-start
 create your project «amayinapps» rigth hier
 
 ```bash
-django-admin.py startproject amazingapps --extension .cfg --template /tmp/django_start_templates/templates/project_template
+django-admin.py startproject amazingapps --extension .cfg --template /tmp/django-start-template/templates/project_template
 
 cd amazingapps
 ```
@@ -115,7 +116,7 @@ cd src/amazingapps/apps
 create your app «app1»
 
 ```bash
-django-admin.py startapp --template /tmp/django_start_templates/templates/app_template app1 --extension .html
+django-admin.py startapp --template /tmp/django-start-template/templates/app_template app1 --extension .html
 
 
 cd ../../.. 
