@@ -74,57 +74,57 @@ all templates is currently writen un French, so remember to translate manualy al
 exemple of default site in 5 minute
 -----------------------------------
 
-  first, don't work in your home, or it will be a mess soon enouth
-  ```bash
-  cd /tmp/
-  mkdir experiments
-  ```
-  
-  copy this repo (how can you try it without getting it ?)
-  
-  ```bash
-  git clone https://github.com/onysos/django-start-templates.git /tmp/django-start-template
-  ```
-  
-  create your project «amayinapps» rigth hier
-  
-  ```bash
-  django-admin.py startproject amazingapps --extension .cfg --template /tmp/django_start_templates/templates/project_template
-  
-  cd amazingapps
-  ```
-  
-  create buildout tree
-  
-  ```bash
-  python bootstrap.py
-  ```
-  
-  make buildout env for dev (-c prod.cfg will use prod dependecy and settings.prod)
-  
-  ```bash
-  bin/buildout -c dev.cfg
-  ```
-  
-  go into the dirrectory for custom apps
-  
-  ```bash
-  cd src/amazingapps/apps
-  ```
-  
-  create your app «app1»
-  
-  ```bash
-  django-admin.py startapp --template /tmp/django_start_templates/templates/app_template app1 --extension .html
-  
-  
-  cd ../../.. 
-  ```
-  
-  run the server and check your message «It worked!»
-  ```bash
-  bin/django runserver
-  ```
+first, don't work in your home, or it will be a mess soon enouth
+```bash
+cd /tmp/
+mkdir experiments
+```
+
+copy this repo (how can you try it without getting it ?)
+
+```bash
+git clone https://github.com/onysos/django-start-templates.git /tmp/django-start-template
+```
+
+create your project «amayinapps» rigth hier
+
+```bash
+django-admin.py startproject amazingapps --extension .cfg --template /tmp/django_start_templates/templates/project_template
+
+cd amazingapps
+```
+
+create buildout tree
+
+```bash
+python bootstrap.py
+```
+
+make buildout env for dev (-c prod.cfg will use prod dependecy and settings.prod)
+
+```bash
+bin/buildout -c dev.cfg
+```
+
+go into the dirrectory for custom apps
+
+```bash
+cd src/amazingapps/apps
+```
+
+create your app «app1»
+
+```bash
+django-admin.py startapp --template /tmp/django_start_templates/templates/app_template app1 --extension .html
+
+
+cd ../../.. 
+```
+
+run the server and check your message «It worked!»
+```bash
+bin/django runserver
+```
   
   
   
@@ -134,21 +134,21 @@ lets correct this by:
 
 1. add «app1» in INSTALLED_APPS:
 
-  ```vim src/amazingapps/amazingapps/settings/common.py```
+```vim src/amazingapps/amazingapps/settings/common.py```
 
 2. add some url in your urls.py (project and apps)
 
-  ```
-  vim src/amazingapps/apps/app1/urls.py
-  vim src/amazingapps/amazingapps/urls.py
-  ```
-  
+```
+vim src/amazingapps/apps/app1/urls.py
+vim src/amazingapps/amazingapps/urls.py
+```
+
 
 3. restart server:
-  
-  ```bin/django runserver```
-  
-  
+
+```bin/django runserver```
+
+
 ####take a look at your files:
 
 
