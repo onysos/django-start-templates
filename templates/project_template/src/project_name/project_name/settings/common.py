@@ -24,7 +24,7 @@ DOMAIN_NAME = 'example.com'  # the root domain name from which all static and ap
 # ie : sitename = django  => static_url will be //static-django.example.com/ and base site url will be //django.example.com/
 
 # the administrator IP address which can have direct access event durring server maintenance (used by django_ngnix apps)
-ADMINISTRATOR_IP = '127.0.0.1'
+ADMINISTRATOR_IP = ['127.0.0.1']
 
 # urls from with all transmission shoul be securized with ssl (https).
 # remember do prefix your urls (in urls.py) with this to make sur that the http server can
@@ -43,9 +43,10 @@ INSTALLED_APPS = (
     #------------------------------------------------------------------------------
     # some well recomended apps :D
     #------------------------------------------------------------------------------
-
     # 'grappelli', # jazzy  admin interface
     # 'django.contrib.admin', # django admin interface
+
+
     # 'sorl.thumbnail', # powerfull thumbnail lib in templates
     # 'registration', # django_registration => a complet registarion apps with mail validation
     # 'bootstrap_toolkit',# usefull helper for skin using twiter bootstrap
@@ -266,7 +267,7 @@ LOGIN_REDIRECT_URL = "/"
 # default
 ROOT_URLCONF = '%s.urls' % (BASE_IMPORT_PATH)
 
-ALLOWED_HOSTS = [FULL_SITE_NAME, ADMINISTRATOR_IP]
+ALLOWED_HOSTS = [FULL_SITE_NAME] + ADMINISTRATOR_IP
 ########## END URL CONFIGURATION
 
 CACHES = {
