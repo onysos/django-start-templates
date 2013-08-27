@@ -47,6 +47,11 @@ if DEBUG:
              'level': 'DEBUG',
          }
 
+if 'debug_toolbar' in INSTALLED_APPS:
+    MIDDLEWARE_CLASSES = (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        ) + MIDDLEWARE_CLASSES
+
 # be realy carful hier. since in the __init__.py ther is the default settings who include this.
 # so even if the real used setting in «prod.py». this file will always be included
 if os.environ.has_key("LOCAL_EMAIL"):
