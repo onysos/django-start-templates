@@ -348,6 +348,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        '': {
+            'handlers': ['logfile'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
 
 
     }

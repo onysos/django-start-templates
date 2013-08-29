@@ -36,7 +36,23 @@ INSTALLED_APPS = (
 
 
 DEBUG = False
-logfile = "/var/log/nginx/%s/django.log" % FULL_SITE_NAME
-if os.access(logfile, os.W_OK):
+logfile = "/var/log/django/%s/django.log" % FULL_SITE_NAME
+if os.access(os.path.dirname(os.path.dirname(logfile)), os.W_OK) and not os.path.exists(os.path.dirname(logfile)):
+    try:
+        os.mkdir(os.path.dirname(logfile))
+    except OSError:
+        pass
+
+if os.access(logfile, os.W_OK) or (not os.path.exists(logfile) and os.access(os.path.dirname(logfile), os.W_OK)):
     LOGGING['handlers']["logfile"]["filename"] = logfile
 
+
+if DEBUG:
+    # permet de recupere des info en plus en prod en cas de pepin
+    for apps in INSTALLED_APPS:
+        LOGGING['loggers'][apps] = {
+             'handlers':['logfile'],
+             'level': 'DEBUG',
+         }
+
+    LOGGING['handlers']["logfile"]["level"] = "DEBUG"
