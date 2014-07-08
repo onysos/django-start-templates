@@ -90,10 +90,35 @@ except ImportError:
     BASE_IMPORT_PATH = SITE_NAME
 
 
-FULL_SITE_NAME = FQDN = "%s.%s" % (SITE_NAME, DOMAIN_NAME)
+
+# all path redefinable
+
 
 # Absolute filesystem path to the top-level project folder.
 SITE_ROOT = dirname(DJANGO_ROOT)
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
+# Absolute path to the directory static files should be collected to. Don't put
+# anything in this directory yourself; store your static files in apps' static/
+# subdirectories and in STATICFILES_DIRS.
+STATIC_ROOT = normpath(join(DJANGO_ROOT, 'static'))
+FQDN = "%s.%s" % (SITE_NAME, DOMAIN_NAME)
+LOGFILE = SITE_ROOT + "/django.log"
+try:
+    # compatibilité avec django_manager
+    # on umporte ces settings pour trouver les vrais paths demandé par
+    # django_manager
+    from {{ project_name }}.localsettings.django_manager_settings import *
+except ImportError:
+    pass  # pas de fichier importable
+
+FULL_SITE_NAME = FQDN
+_splited = FQDN.split(".")
+DOMAIN_NAME = "%s.%s" % tuple(_splited[-2:])
+if len(_splited) > 2:
+    SITE_NAME = ".".join(_splited[:-2])
+
+
 
 # Absolute filesystem path to the secret file which holds this project's
 # SECRET_KEY. Will be auto-generated the first time this file is interpreted.
@@ -169,7 +194,7 @@ USE_L10N = True
 
 ########## MEDIA CONFIGURATION
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
+
 
 # URL that handles the media served from MEDIA_ROOT.
 if LOCAL_VERSION is None:
@@ -184,7 +209,6 @@ else:
 # Absolute path to the directory static files should be collected to. Don't put
 # anything in this directory yourself; store your static files in apps' static/
 # subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = normpath(join(DJANGO_ROOT, 'static'))
 
 # URL prefix for static files.
 
@@ -336,7 +360,7 @@ LOGGING = {
          'logfile': {
             'level':'WARNING',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': SITE_ROOT + "/django.log",
+            'filename': LOGFILE,
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'simple',
