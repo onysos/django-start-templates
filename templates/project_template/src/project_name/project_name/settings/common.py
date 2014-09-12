@@ -29,8 +29,8 @@ ADMINISTRATOR_IP = ['127.0.0.1']
 # urls from with all transmission shoul be securized with ssl (https).
 # remember do prefix your urls (in urls.py) with this to make sur that the http server can
 # make the redirections acordingly (see django_nginx apps)
-SECURE_PREFIX = ["/secure/", "/accounts/"] # for only /secure and /accounts/ pages # beware for session thief 
-# SECURE_PREFIX = ["~ /.+"] # for all non home pages
+# SECURE_PREFIX = ["/secure/", "/accounts/"] # for only /secure and /accounts/ pages # beware for session thief 
+SECURE_PREFIX = ["~ /.+"] # for all non home pages
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_SCHEME', 'https')
 
 ########## APP CONFIGURATION
