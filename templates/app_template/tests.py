@@ -3,6 +3,6 @@ from __future__ import unicode_literals
 import logging
 logger = logging.getLogger(__name__)
 
-from django.test import TestCase
+from unittest import TestCase
 
 # Create your tests here.

@@ -1,5 +1,0 @@
-Django==1.5
-South
-django-grappelli==2.4.3
-django_extensions
-PIL==1.1.7
