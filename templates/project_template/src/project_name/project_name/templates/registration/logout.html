@@ -1,11 +1,12 @@
-{% extends "registration/base.html" %} 
-{% block corps %}
+{% extends "registration/base.html" %}
+{% block title_right %}déconnection{% endblock %}
+{% block content %}
 
 
 
 <div class="content">
   <div class="row">
-    <div class="well col-md-6">
+    <div class="well col-md-4">
       <p>Vous vous êtes bien déconnecté avec succés.<br />
         cliquer <a href="{% url 'auth_login' %}" >ici</a> pour vous reconnecter.
       </p>
@@ -16,4 +17,4 @@
 
 
 
-{% endblock corps %}
+{% endblock content %}

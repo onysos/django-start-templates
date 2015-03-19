@@ -5,7 +5,7 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>{% block title %}{% block title_left %}{{request.site.name}}{% endblock title_left %} - {% block title_right %}{% endblock title_right %}{% endblock title %}</title>
+    <title>{% block title %}{% block title_left %}{{site.name}}{% endblock title_left %} - {% block title_right %}{% endblock title_right %}{% endblock title %}</title>
     <meta name="description" content="" />
     <meta name="author" content="!!AUTHOR!!" />
 
@@ -44,7 +44,7 @@
                   <span class="icon-bar"></span>
                 </button>
                 {% block brand %}
-                  <a class="navbar-brand" href="#">{{site.name}}</a>
+                  <a class="navbar-brand" href="/">{{site.name}}</a>
                 {% endblock brand %}
               </div>
               <nav class="collapse navbar-collapse bs-navbar-collapse" id="bs-navbar-collapse" role="navigation">
@@ -106,9 +106,9 @@
               {% block pre_content %}
               {% endblock %}
               <div id="modal_subcontent">
-                {% block corps %}
+                {% block content %}
                 <p> ceci est une page vide </p>
-                {% endblock corps %}
+                {% endblock content %}
               </div>
             </div>
           </div>

@@ -1,0 +1,7 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block userlinks %}
+
+{{ block.super }}
+<li><a href="/">{% trans 'retour au site' %}</a></li>
+{% endblock userlinks %}
