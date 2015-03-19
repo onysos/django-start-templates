@@ -45,19 +45,19 @@ INSTALLED_APPS = (
     #------------------------------------------------------------------------------
     # some well recomended apps :D
     #------------------------------------------------------------------------------
-    # 'grappelli', # jazzy  admin interface
-    # 'django.contrib.admin', # django admin interface
+    'grappelli', # jazzy  admin interface
+    'django.contrib.admin', # django admin interface
 
 
     # 'sorl.thumbnail', # powerfull thumbnail lib in templates
     # 'registration', # django_registration => a complet registarion apps with mail validation
-    # 'bootstrap3',# usefull helper for skin using twiter bootstrap
+    'bootstrap3',# usefull helper for skin using twiter bootstrap
     # 'django_nginx', # generate nginx config with «manage.py create_nginx_config»
 
     #------------------------------------------------------------------------------
     # some must have apps (activated by default)
     #------------------------------------------------------------------------------
-    'south',  # South migration tool.
+    # 'south',  # South migration tool. only for django < 1.7
     'django_extensions',  # a Must have tool
 
     #------------------------------------------------------------------------------
@@ -167,10 +167,10 @@ TIME_ZONE = "Europe/Paris"
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html.
-LANGUAGE_CODE = 'fr'
+LANGUAGE_CODE = 'fr_FR'
 
 LANGUAGES = (
-        ('fr', 'Français'),
+        ('fr_FR', 'Français'),
 )
 
 
@@ -191,6 +191,8 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
+
+USE_TZ = True
 ########## END GENERAL CONFIGURATION
 
 
@@ -267,17 +269,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    'django.core.context_processors.request',
     "%s.context_processors.version" % BASE_IMPORT_PATH,  # a simple processor who give access to LOCAL_VERSION isued from VCS
-
-    )
-
-
-
+    "%s.context_processors.site" % BASE_IMPORT_PATH,  # give acces to the current site by the site variable
+)
 
 
 ########## END MIDDLEWARE CONFIGURATION
 BOOTSTRAP_BASE_URL = STATIC_URL + "/bootstrap/"
-LOGIN_URL = "auth:login"  # since django 1.5, can be a named url patern
+LOGIN_URL = "auth_login"
 
 LOGIN_REDIRECT_URL = "/"
 
@@ -324,6 +324,8 @@ except IOError:
     except IOError:
         raise Exception('Cannot open file `%s` for writing.' % SECRET_FILE)
 ########## END KEY CONFIGURATION
+
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 ######### Mercurial Version
 
@@ -386,3 +388,69 @@ LOGGING = {
 }
 
 
+#### bootsrap3 apps specific config
+JQuery_Version = "1.11.2"
+BOOTSTRAP_Version = "3.3.2"
+
+BOOTSTRAP3 = {
+
+    # The URL to the jQuery JavaScript file
+    'jquery_url': STATIC_URL + "js/jquery-%s.min.js" % JQuery_Version,
+
+    # The Bootstrap base URL
+    'base_url': STATIC_URL + "bootstrap-%s-dist/" % BOOTSTRAP_Version,
+
+    # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
+    'css_url': None,
+
+    # The complete URL to the Bootstrap CSS file (None means no theme)
+    'theme_url': None,
+
+    # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
+    'javascript_url': None,
+
+    # Put JavaScript in the HEAD section of the HTML document (only relevant if you use bootstrap3.html)
+    'javascript_in_head': False,
+
+    # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3 template tags)
+    'include_jquery': False,
+
+    # Label class to use in horizontal forms
+    'horizontal_label_class': 'col-md-2',
+
+    # Field class to use in horiozntal forms
+    'horizontal_field_class': 'col-md-8',
+
+    # Set HTML required attribute on required fields
+    'set_required': True,
+
+    # Set placeholder attributes to label if no placeholder is provided
+    'set_placeholder': True,
+
+    # Class to indicate required (better to set this in your Django form)
+    'required_css_class': '',
+
+    # Class to indicate error (better to set this in your Django form)
+    'error_css_class': 'has-error',
+
+    # Class to indicate success, meaning the field has valid input (better to set this in your Django form)
+    'success_css_class': 'has-success',
+
+    # Renderers (only set these if you have studied the source and understand the inner workings)
+    'formset_renderers':{
+        'default': 'bootstrap3.renderers.FormsetRenderer',
+    },
+    'form_renderers': {
+        'default': 'bootstrap3.renderers.FormRenderer',
+    },
+    'field_renderers': {
+        'default': 'bootstrap3.renderers.FieldRenderer',
+        'inline': 'bootstrap3.renderers.InlineFieldRenderer',
+    },
+}
+
+#===============================================================================
+# custom applicatinos settings
+#===============================================================================
+
+REGISTRATION_OPEN = True

@@ -1,0 +1,10 @@
+Bonjour,
+
+Ceci est le mail d'activation de votre compte utilisateur pour le site {{ site.name }}.
+Si vous voulez activer votre compte, il vous suffit de cliquer sur le lien suivant:
+http://{{ site.domain }}{% url 'registration_activate' activation_key=activation_key %}
+
+
+Si jamais vous n'avez pas demandé à vous créer un compte sur le site {{ site }}, supprimez ce mail et n'en tenez pas compte.
+
+Temps restant pour activer votre compte avant qu'il soit supprimé : {{ expiration_days }} jour{{ expiration_days|pluralize }}

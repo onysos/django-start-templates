@@ -1,0 +1,42 @@
+{% extends "registration/base.html" %} 
+{% load bootstrap3 %}
+{% block corps %}
+
+
+
+<div class="content">
+  <div class="row">
+    <div class="login-form col-md-6">
+      <h2>Login</h2>
+      <form method="post" class="well" action="{% url 'auth_login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{next}}" />
+        {% bootstrap_form form %}
+        <div class="actions">
+          <button type="submit" class="btn btn-success">S'authentifier</button>
+        </div>
+
+      </form>
+      <a class="btn btn-warning" href="{% url 'auth_password_reset' %}">Récuperation de mot de passe</a>
+    </div>
+    <div class="col-md-6">
+      <h1>Inscription</h1>
+      <div class="well">
+        {% comment %}
+        <p>
+          L'inscription à ce site !!BLAHBLAH!!<br /> 
+        </p>
+        {% endcomment %}
+        <div class="actions">
+          <a href="{% url 'registration_register' %}" class="btn btn-primary"><i class="icon-ok icon-white" ></i>S'inscrire</a>
+        </div>
+      </div>
+        
+
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock corps %}

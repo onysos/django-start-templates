@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+{% load bootstrap3 %}
+
+
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>{% block title %}{% block title_left %}!!ProjectName!!{% endblock title_left %} - {% block title_right %}{% endblock title_right %}{% endblock title %}</title>
+    <title>{% block title %}{% block title_left %}{{request.site.name}}{% endblock title_left %} - {% block title_right %}{% endblock title_right %}{% endblock title %}</title>
     <meta name="description" content="" />
     <meta name="author" content="!!AUTHOR!!" />
 
@@ -11,10 +14,10 @@
     <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.png" />
     
-    
-    <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+    {% bootstrap_css %}
     <link href="{{ STATIC_URL }}css/base.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{% bootstrap_jquery_url %}"></script>
+    <script type="text/javascript" src="{% bootstrap_javascript_url %}"></script>
     
     {% block link %}
     
@@ -26,146 +29,123 @@
     
     {{form.media.css}}
   </head>
-  <body class="" data-offset="50" data-target=".subnav" data-spy="scroll">
+ <body class="" data-offset="50" data-target=".subnav" data-spy="scroll">
     {% block body %}
-    <div id="wrap">
-      
-      <nav id="sidebar" role="navigation" class="navbar navbar-fixed-top">
-      {% block menu %}
-        <div class="navbar-inner">
+      <div id="wrap">
+        <header id="top" class="navbar navbar-default navbar-static-top bs-docs-nav" role="banner">
           <div class="container">
-            <a class="brand" href="/" >{{SITE_NAME}}</a>
-            {% block bar_content %}
-            <ul class="nav">
-    
-            {% comment %}
-              <!-- simple link to app1 page -->
-              <li class="{% block app1_active %}{% endblock %}">
-                <a href="{% url "app1:view1" %}">App1</a>
-              </li>
-                
-              <!-- dropdown link to app2 -->
-
-              <li class="dropdown {% block app2_active %}{% endblock %}">
-                <a class="dropdown-toggle " data-toggle="dropdown" href="#">
-                  App2
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="{% url "app2:view1" %}">
-                      app2.element1
-                    </a>
-                  </li>
-                  <li>
-                    <a href="{% url "app2:view2" %}">
-                      app2.element2
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              
-            {% endcomment %}
-            
-            {% comment %}
-            {# uncomment to add a login/logout/changepassword menubar #}
-            
-            <ul class="nav pull-right">
-              {% if user.is_authenticated %} 
-                
-                  <li class="dropdown {% block account_active %}{% endblock %}">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      <i class="icon-user"></i> mon compte : {{ user }}
-                      <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a href="{% url 'auth_password_change' %}"><i class="icon-repeat"></i> Changer mon mot de passe</a>
-                      </li>
-                      <li>
-                        <a href="{% url 'auth_logout' %}"><i class="icon-off" ></i> Deconnexion</a>
-                      </li>
+            {% block menu %}
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                {% block brand %}
+                  <a class="navbar-brand" href="#">{{site.name}}</a>
+                {% endblock brand %}
+              </div>
+              <nav class="collapse navbar-collapse bs-navbar-collapse" id="bs-navbar-collapse" role="navigation">
+                {% block bar_content %}
+                  {% block bar_apps_content %}
+                    <ul class="nav navbar-nav navbar-left">
+                      {% comment %}
+                        {% if user.is_authenticated %}
+                          <li class="{% block app1_active %}{% endblock %}">
+                              <a href="{% url "app1:home" %}">App1 Home</a>
+                          </li>  
+                        {% endif %}
+                      {% endcomment %}
                     </ul>
-                  </li>
-                  {% if user.is_staff %}
-                    <li class="divider-vertical"></li>
-                    <li>
-                      <a href="{% url "admin:index" %}" >Administration</a>
+                  {% endblock bar_apps_content %}
+                  
+                  {# uncomment to add a login/logout/changepassword menubar #}
+                  
+                  <ul class="nav navbar-nav navbar-right">
+                    
+                    <li class="{% if user.is_authenticated %}dropdown{% endif %} {% block account_active %}{% endblock %}">
+                      {% if user.is_authenticated %} 
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          <i class="icon-user"></i> mon compte : {{ user }}
+                          <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a href="{% url 'auth_password_change' %}"><i class="icon-repeat"></i> Changer mon mot de passe</a>
+                          </li>
+                          <li>
+                            <a href="{% url 'auth_logout' %}"><i class="icon-off" ></i> Deconnexion</a>
+                          </li>
+                        </ul>
+                        {% if user.is_staff %}
+                          <li class="divider-vertical"></li>
+                          <li>
+                            <a href="{% url "admin:index" %}" >Administration</a>
+                          </li>
+                        {% endif %}
+                      {% else %}{# is autenticated #}
+                        <a href="{% url 'auth_login' %}">Connexion</a>
+                      {% endif %}{# is autenticated #}
                     </li>
-                  {% endif %}
-                
-              {% else %}{# is autenticated #}
-                
-                  <li class="{% block login_active %}{% endblock %}">
-                    <a href="{% url 'auth_login' %}">Connexion</a>
-                  </li>
-                
-              {% endif %}{# is autenticated #}
-            </ul>
-            {% endcomment %}
-            {% endblock bar_content %}
+                  </ul>
+                {% endblock bar_content %}
+              </nav>
+            {% endblock menu %}
           </div>
-        </div>
-      {% endblock menu %}
-      </nav>
-  
-      <div class="container">
-        <div id="corps" class="container">
-          {% block message %}
-
-            {% if messages %}
-            <div class="row">
-              <div class="span12 ">
-                {% for message in messages %}
-                  <div class="alert alert-{{ message.tags }} fade in">
-                    <button class="close" data-dismiss="alert">×</button>
-                    <p>{{message }}</p>
-                  </div>
-                {% endfor %}
+        </header>
+        
+        {% block main_container %}
+          <div class="{% block container_class %}container{% endblock container_class %}">
+            <div id="corps" class="">
+              {% block message %}
+    
+                {% bootstrap_messages %}
+              {% endblock message %}
+              {% block pre_content %}
+              {% endblock %}
+              <div id="modal_subcontent">
+                {% block corps %}
+                <p> ceci est une page vide </p>
+                {% endblock corps %}
               </div>
             </div>
-            {% endif %}
-          {% endblock message %}
-          
-          {% block pre_content %}
-          {% endblock %}
-          {% block corps %}
-          <p> ceci est une page vide </p>
-          {% endblock corps %}
+          </div>
+        {% endblock main_container %}
+        
+        <div id="templateblock">
+          {% block template %}{% endblock template %}
         </div>
-      </div>
-      
-      <div id="templateblock">
-        {% block template %}{% endblock template %}
-      </div>
-      
-      
-      <div id="jsblock">
         
-        {% block js %}
-          <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-          <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
-        {% endblock js %}
         
-      </div>
-      <div id="forms_media">
-        {{form.media.js}}
-        {% block forms_media %}{% endblock forms_media %}
-      </div>   
-    </div> <!-- #wrap -->
-    
-    <footer id="footer">
-      <div class="container">
-      {% block footer %}{% endblock footer%}
-        <p class="muted credit center">&copy; !!MyCompany!! {% if LOCAL_VERSION %} - version {{ LOCAL_VERSION }} {% endif %}
+        <div id="jsblock">
+          {% block js_uncompressed %}
+          
+          
+          {% endblock %}
+          {% block js %}
             
-        </p>
-        
-        
-      </div>
-    </footer>
+          {% endblock js %}
+        </div>
+        <div id="forms_media">
+          
+          {% block forms_media %}
+            {{form.media.js}}
+          {% endblock forms_media %}
+        </div>   
+      </div> <!-- #wrap -->
       
-    
+      <footer id="footer">
+        <div class="container">
+        {% block footer %}{% endblock footer%}
+          <p class="muted credit center">&copy; Copyright !!AUTHOR!! {% if LOCAL_VERSION %} - version {{ LOCAL_VERSION }} {% endif %} {% if version_name %}[<a href="{{ STATIC_URL|default:"http://static-onyticket.onysos.fr/static/" }}changelog.txt">{{version_name}}</a>]{% endif %}
+              <a href="http://www.bepo.fr"><img src="{{ STATIC_URL|default:"http://static-onyticket.onysos.fr/static/" }}img/bepo-powered.png" alt="logo bepo.fr" title="bepo.fr" /></a>
+              <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL|default:"http://static-onyticket.onysos.fr/static/" }}img/djangomade124x25.gif" alt="Made with Django." title="Made with Django." /></a>
+          </p>
+          
+        </div>
+      </footer>
     {% endblock body %} 
   </body>
   

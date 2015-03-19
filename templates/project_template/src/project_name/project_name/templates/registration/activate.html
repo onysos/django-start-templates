@@ -1,0 +1,6 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<h1>Echec de l'activation</h1>
+<p>L'activation de votre compte n'a pas pu se poursuivre car la clé<i>{{ activation_key }}</i> n'est pas ou plus valide.</p>
+<p>Veuillez recommencer <a href="{% url 'login' %}">depuis le début</a>.</p>
+{% endblock %}

@@ -1,0 +1,1 @@
+mail d'activation de compte pour {{ site.name }}

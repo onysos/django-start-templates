@@ -1,0 +1,19 @@
+{% extends "registration/base.html" %} 
+{% block corps %}
+
+
+
+<div class="content">
+  <div class="row">
+    <div class="well col-md-6">
+      <p>Vous vous êtes bien déconnecté avec succés.<br />
+        cliquer <a href="{% url 'auth_login' %}" >ici</a> pour vous reconnecter.
+      </p>
+    </div>
+    
+  </div>
+</div>
+
+
+
+{% endblock corps %}

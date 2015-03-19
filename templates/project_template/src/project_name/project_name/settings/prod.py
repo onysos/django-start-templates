@@ -8,9 +8,9 @@ https://docs.djangoproject.com/en/{{ docs_version }}/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/
 """
-
+from __future__ import absolute_import, print_function, unicode_literals
 # https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#std:setting-DATABASES
-from common import *
+from .common import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.',  # postgresql_psycopg2   =   mysql

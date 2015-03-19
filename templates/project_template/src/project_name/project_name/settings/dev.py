@@ -8,8 +8,10 @@ https://docs.djangoproject.com/en/{{ docs_version }}/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/
 """
-from common import *
+from __future__ import absolute_import, print_function, unicode_literals
+from .common import *
 import asyncore
+import itertools
 
 DATABASES = {
     'default': {
@@ -37,24 +39,37 @@ DEBUG_TOOLBAR_CONFIG = dict(INTERCEPT_REDIRECTS=False)
 
 
 if DEBUG:
-
     INSTALLED_APPS += (
         'debug_toolbar',  # how to debug without this
     )
 
-    LOGGING['loggers'][''] = {
-             'handlers':['console'],
-             'level': 'DEBUG',
-         }
+    if 'debug_toolbar' in INSTALLED_APPS:
+        MIDDLEWARE_CLASSES = (
+            'debug_toolbar.middleware.DebugToolbarMiddleware',
+            ) + MIDDLEWARE_CLASSES
 
-if 'debug_toolbar' in INSTALLED_APPS:
-    MIDDLEWARE_CLASSES = (
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-        ) + MIDDLEWARE_CLASSES
+    skipped = [
+               # "django_select2",
+               ]
+    forced = [
+                # "django.db",
+             ]
+    for app in itertools.chain(INSTALLED_APPS, forced):
+        LOGGING['loggers'][app] = {
+             'handlers': ['console'],
+             'level': 'DEBUG',
+             'propagate': True,
+         }
+    for app in skipped:
+        LOGGING['loggers'][app] = {
+             'handlers': ['console'],
+             'level': 'ERROR',
+             'propagate': False,
+         }
 
 # be realy carful hier. since in the __init__.py ther is the default settings who include this.
 # so even if the real used setting in «prod.py». this file will always be included
-if os.environ.has_key("LOCAL_EMAIL"):
+if os.environ.get("LOCAL_EMAIL", "False").lower() in ("true", "y", "o"):
     # start  a local debuging server for email.
     EMAIL_HOST = "localhost"
     EMAIL_PORT = "1026"
@@ -76,3 +91,9 @@ MEDIA_URL = '/media/'
 # URL prefix for static files.
 STATIC_URL = '/static/'
 
+BOOTSTRAP3.update({
+    # The URL to the jQuery JavaScript file
+    'jquery_url': STATIC_URL + "js/jquery-%s.min.js" % JQuery_Version,
+    # The Bootstrap base URL
+    'base_url': STATIC_URL + "bootstrap-%s-dist/" % BOOTSTRAP_Version,
+})

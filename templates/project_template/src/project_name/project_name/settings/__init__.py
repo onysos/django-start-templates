@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-
-from dev import *
+from __future__ import absolute_import, print_function, unicode_literals
+from .dev import *
