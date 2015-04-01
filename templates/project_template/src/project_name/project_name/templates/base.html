@@ -139,9 +139,9 @@
       <footer id="footer">
         <div class="container">
         {% block footer %}{% endblock footer%}
-          <p class="muted credit center">&copy; Copyright !!AUTHOR!! {% if LOCAL_VERSION %} - version {{ LOCAL_VERSION }} {% endif %} {% if version_name %}[<a href="{{ STATIC_URL|default:"http://static-onyticket.onysos.fr/static/" }}changelog.txt">{{version_name}}</a>]{% endif %}
-              <a href="http://www.bepo.fr"><img src="{{ STATIC_URL|default:"http://static-onyticket.onysos.fr/static/" }}img/bepo-powered.png" alt="logo bepo.fr" title="bepo.fr" /></a>
-              <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL|default:"http://static-onyticket.onysos.fr/static/" }}img/djangomade124x25.gif" alt="Made with Django." title="Made with Django." /></a>
+          <p class="muted credit center">&copy; Copyright !!AUTHOR!! {% if LOCAL_VERSION %} - version {{ LOCAL_VERSION }} {% endif %} {% if version_name %}[<a href="{{ STATIC_URL|default:"/static/" }}changelog.txt">{{version_name}}</a>]{% endif %}
+              <a href="http://www.bepo.fr"><img src="{{ STATIC_URL|default:"/static/" }}img/bepo-powered.png" alt="logo bepo.fr" title="bepo.fr" /></a>
+              <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL|default:"/static/" }}img/djangomade124x25.gif" alt="Made with Django." title="Made with Django." /></a>
           </p>
           
         </div>

@@ -1,7 +1,7 @@
 django startapp/startproject templates 
 ============================
 
-a template usable by django_admin.py to start a apps with some better defaults files (django1.5)
+a template usable by django_admin.py to start a apps with some better defaults files (django1.7)
 
 usage
 -----
@@ -17,6 +17,16 @@ then startproject
 or startapp
 
     django-admin.py startapp --extension=cfg,html   --template /tmp/django-start-templates/templates/app_template/ myamazingApp
+
+
+
+then : insert your own important data in the templates : 
+
+    grep -R --exclude-dir=.git '!![^!]*!!' .  --exclude="*.min.js"
+
+this will show you all «tags» inserted in the templates by a double !!tag!!.
+
+tags can be AUTHOR or AUTHOR_MAIL. just replaces them and that's it,.
 
 
 startapps
