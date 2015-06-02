@@ -9,9 +9,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/
 """
 from __future__ import absolute_import, print_function, unicode_literals
-from .common import *
+from .common import *  # @UnusedWildImport
 import asyncore
 import itertools
+from copy import deepcopy
 
 DATABASES = {
     'default': {
@@ -36,7 +37,7 @@ TEMPLATE_DEBUG = DEBUG
 INTERNAL_IPS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = dict(INTERCEPT_REDIRECTS=False)
 
-
+LOGGING = deepcopy(LOGGING)
 
 if DEBUG:
     INSTALLED_APPS += (
@@ -66,6 +67,7 @@ if DEBUG:
              'level': 'ERROR',
              'propagate': False,
          }
+    LOGGING['loggers']['']['handlers'].remove("logfile")
 
 # be realy carful hier. since in the __init__.py ther is the default settings who include this.
 # so even if the real used setting in «prod.py». this file will always be included
@@ -91,9 +93,11 @@ MEDIA_URL = '/media/'
 # URL prefix for static files.
 STATIC_URL = '/static/'
 
+BOOTSTRAP3 = BOOTSTRAP3.copy()
 BOOTSTRAP3.update({
     # The URL to the jQuery JavaScript file
     'jquery_url': STATIC_URL + "js/jquery-%s.min.js" % JQuery_Version,
     # The Bootstrap base URL
-    'base_url': STATIC_URL + "bootstrap-%s-dist/" % BOOTSTRAP_Version,
+    'base_url': STATIC_URL + "bootstrap-%s-dist/" % BOOTSTRAP_VERSION,
+    'theme_url': STATIC_URL + "bootstrap-%s-dist/css/bootstrap-theme.min.css" % BOOTSTRAP_VERSION,
 })

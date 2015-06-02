@@ -390,7 +390,7 @@ LOGGING = {
 
 #### bootsrap3 apps specific config
 JQuery_Version = "1.11.2"
-BOOTSTRAP_Version = "3.3.2"
+BOOTSTRAP_VERSION = "3.3.2"
 
 BOOTSTRAP3 = {
 
@@ -398,13 +398,14 @@ BOOTSTRAP3 = {
     'jquery_url': STATIC_URL + "js/jquery-%s.min.js" % JQuery_Version,
 
     # The Bootstrap base URL
-    'base_url': STATIC_URL + "bootstrap-%s-dist/" % BOOTSTRAP_Version,
+    'base_url': STATIC_URL + "bootstrap-%s-dist/" % BOOTSTRAP_VERSION,
 
     # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
     'css_url': None,
 
     # The complete URL to the Bootstrap CSS file (None means no theme)
-    'theme_url': None,
+    #'theme_url': None,
+    'theme_url': STATIC_URL + "bootstrap-%s-dist/css/bootstrap-theme.min.css" % BOOTSTRAP_VERSION,
 
     # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
     'javascript_url': None,
@@ -454,3 +455,4 @@ BOOTSTRAP3 = {
 #===============================================================================
 
 REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 4
